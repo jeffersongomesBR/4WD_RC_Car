@@ -21,8 +21,22 @@
 #define Right d
 #define Break S
 #define HandBreak x
-#define ToggleSpeed W
+#define Speed W
 #define Light l
+#define Reset r
+
+/// ---Definições--- ///
+const int deltaV = 1;
+const int lowSpeed = 64; //Minimo 0
+const int mediumSpeed = 128;
+const int highSpeed = 255; //Maximo 255
+
+/// ---Variaveis--- ///
+int @speed = 0; //0-255
+int targetSpeed = 0; //0-3
+bool lightON = false;
+bool handBreakUP = false;
+char key;
 
 /// ---Codigo--- ///
 
@@ -50,15 +64,43 @@ void FrontBreak() {
   //...
 }
 
+//Luzes
+void ToggleLight() {
+
+  //...
+}
+
+//Velocidade
+void UpdateSpeed() {
+
+  //...
+}
+
+//Reset
+void Reset() {
+
+  //...
+}
+
 void setup() {
 
   for(int i = FirstPin; i < LastPin; i++) {
 
     pinMode(i, OUTPUT);
   }
+
+  Serial.begin(9600);
 }
 
 void loop() {
   
-  //...
+  if(Serial.available() > 0) {
+
+    key = Serial.read();
+  }
+
+  if(key == w) {
+
+    FowardBackward();
+  }
 }
