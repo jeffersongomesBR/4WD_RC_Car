@@ -1,18 +1,16 @@
 /// ---Pinos--- ///
 
-//Motores Dianteiros
-#define FrontEngineL 4 //Unused
-#define FrontEngineR 5 //Unused
-#define FrontEngineV 3 //PWM~ //Unused
-
-//Motores Traseiros
-#define RearEngineL 7 //Unused
-#define RearEngineR 8 //Unused
-#define RearEngineV 6 //PWM~ //Unused
+//Ponte H
+#define D1 5 //Unused
+#define D2 4 //Unused
+#define D3 3 //Unused
+#define D4 7 //Unused
+#define ENA 8 //PWM~ //Unused
+#define ENB 6 //PWM~ //Unused
 
 //Outros
-#define FirstPin 3
-#define LastPin 7
+#define FirstPin 3 //Primeiro pino atterado
+#define LastPin 7 //Ultimo pino aterrado
 
 //TODO: need tests with bluetooth module
 /// ---Controles--- ///
@@ -20,7 +18,7 @@
 #define Backward s //Unused
 #define Left a //Unused
 #define Right d //Unused
-#define Stop S //Unused
+#define Stop x //Unused
 #define Light l //Unused
 #define Reset r //Unused
 
@@ -69,7 +67,11 @@ void UpdateSpeed() {
 //Frente - ré
 void FowardBackward(int d) {
   
-  //...
+  if(Velocity > 0) {
+
+    digitalWrite(FrontEngineL, High);
+    digitalWirite(FrontEngine)
+  }
 }
 
 //Esquerda - Direita
