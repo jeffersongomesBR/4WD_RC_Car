@@ -20,14 +20,13 @@
 #define Backward s //Unused
 #define Left a //Unused
 #define Right d //Unused
-#define Break S //Unused
-#define HandBreak x //Unused
-#define Speed W //Unused
+#define Stop S //Unused
 #define Light l //Unused
 #define Reset r //Unused
 
 /// ---Definições--- ///
-const int deltaV = 2;
+const int deltaV = 2; //Utilizado na interpolação da velocidade
+const int speedUpRate = 100; //Frequencia de atualização de velocidade (ms)
 const int lowSpeed = 64; //Minimo 0
 const int mediumSpeed = 128;
 const int highSpeed = 255; //Maximo 255
@@ -35,16 +34,16 @@ const int highSpeed = 255; //Maximo 255
 /// ---Variaveis--- ///
 int velocity = 0; //0-255
 int targetSpeed = 0; //0-255
-int speedMode = 2; //1-3
-int moveDirection = 0 //-1 = reverse, 0 = stopped, 1 = forward //Unused
-int turnDirection = 0 //-1 = Left, 0 = stopped, 1 = Right //Unused
+int moveDirection = 0; //-1 = reverse, 0 = stopped, 1 = forward //Unused
+int turnDirection = 0; //-1 = Left, 0 = stopped, 1 = Right //Unused
 bool lightON = false; //Unused
-bool handBreakUP = false; //Unused
-char key;
+bool Stopped = false; //Unused
+char key; //Received bluetooth data
+unsigned long previusTime = 0;
 
 /// ---Codigo--- ///
 
-//Velocidade
+//Velocidade (Loop)
 void UpdateSpeed() {
 
   if(velocity < targetSpeed) {
@@ -121,29 +120,16 @@ void loop() {
     key = Serial.read();
   }
 
-  //Update Target Speed
-  switch(speedMode) {
+  unsigned long currentTime = millis();
 
-    case 1:
-    targetSpeed = lowSpeed;
-    break;
-
-    case 2:
-    targetSpeed = mediumSpeed;
-    break;
-
-    case 3:
-    targetSpeed = highSpeed;
-    break;
-
-    default:
-    targetSpeed = mediumSpeed;
-    break;
+  if(currentTime - previusTime >= speedUpRate) {
+    
+    previusTime = currentTime;
+    UpdateSpeed();
   }
 
   if(moveDirection != 0 || turnDirection != 0) {
 
-    UpdateSpeed();
     FowardBackward(moveDirection);
     LeftRight(turnDirection);
   }
