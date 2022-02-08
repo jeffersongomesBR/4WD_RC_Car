@@ -32,8 +32,9 @@ int targetSpeed = 0; //0-255
 int moveDirection = 0; //-1 = reverse, 0 = stopped, 1 = forward //Unused
 int turnDirection = 0; //-1 = Left, 0 = stopped, 1 = Right //Unused
 bool lightON = false; //Unused
-char key; //Received bluetooth data
-unsigned long previusTime = 0;
+bool stopped = false; //Unused
+char stream; //Received bluetooth data
+unsigned long previusTime = 0; //ms
 
 /// ---Codigo--- ///
 
@@ -118,7 +119,7 @@ void loop() {
   //TODO: does buffer clear after read?
   if(Serial.available() > 0) {
 
-    key = Serial.read();
+    stream = Serial.read();
   }
 
   unsigned long currentTime = millis();
