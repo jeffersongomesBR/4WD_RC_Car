@@ -8,10 +8,6 @@
 #define ENA 8 //PWM~ //Unused
 #define ENB 6 //PWM~ //Unused
 
-//Outros
-#define FirstPin 3 //Primeiro pino atterado
-#define LastPin 7 //Ultimo pino aterrado
-
 //TODO: need tests with bluetooth module
 /// ---Controles--- ///
 #define Foward w //Unused
@@ -30,6 +26,7 @@ const int mediumSpeed = 128;
 const int highSpeed = 255; //Maximo 255
 
 /// ---Variaveis--- ///
+int hBridge[6] = {D1, D2, D3, D4, ENA, ENB};
 int velocity = 0; //0-255
 int targetSpeed = 0; //0-255
 int moveDirection = 0; //-1 = reverse, 0 = stopped, 1 = forward //Unused
@@ -42,6 +39,7 @@ unsigned long previusTime = 0;
 /// ---Codigo--- ///
 
 //Velocidade (Loop)
+//TODO: Will include turn speed
 void UpdateSpeed() {
 
   if(velocity < targetSpeed) {
@@ -107,9 +105,10 @@ void Reset() {
 
 void setup() {
 
-  for(int i = FirstPin; i < LastPin; i++) {
+  //Set hBridge as output
+  for(int i = 0; i < 6; i++) {
 
-    pinMode(i, OUTPUT);
+    pinMode(hBridge[i], OUTPUT);
   }
 
   Serial.begin(9600);
