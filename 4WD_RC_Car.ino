@@ -32,7 +32,6 @@ int targetSpeed = 0; //0-255
 int moveDirection = 0; //-1 = reverse, 0 = stopped, 1 = forward //Unused
 int turnDirection = 0; //-1 = Left, 0 = stopped, 1 = Right //Unused
 bool lightON = false; //Unused
-bool Stopped = false; //Unused
 char key; //Received bluetooth data
 unsigned long previusTime = 0;
 
@@ -130,9 +129,6 @@ void loop() {
     UpdateSpeed();
   }
 
-  if(moveDirection != 0 || turnDirection != 0) {
-
-    FowardBackward(moveDirection);
-    LeftRight(turnDirection);
-  }
+  //TODO: Control by seting target speeds
+  //TODO: Missing Loops (check functions!)
 }
