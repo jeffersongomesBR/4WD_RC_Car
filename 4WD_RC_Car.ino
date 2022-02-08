@@ -1,10 +1,10 @@
 /// ---Pinos--- ///
 
 //Ponte H
-#define D1 5 //Unused
+#define D1 3 //Unused
 #define D2 4 //Unused
-#define D3 3 //Unused
-#define D4 7 //Unused
+#define D3 5 //Unused
+#define D4 6 //Unused
 #define ENA 8 //PWM~ //Unused
 #define ENB 6 //PWM~ //Unused
 
@@ -64,44 +64,45 @@ void UpdateSpeed() {
   }
 }
 
-//Frente - ré
+//Frente - ré (Loop)
+//TODO: Finish this
 void FowardBackward(int d) {
-  
-  if(Velocity > 0) {
 
-    digitalWrite(FrontEngineL, High);
-    digitalWirite(FrontEngine)
-  }
+  //Foward
+  digitalWrite(D1, HIGH);
+  digitalWrite(D2, LOW);
+  digitalWrite(D3, HIGH);
+  digitalWrite(D4, LOW);
+
+  //Backward
+  digitalWrite(D1, LOW);
+  digitalWrite(D2, HIGH);
+  digitalWrite(D3, LOW);
+  digitalWrite(D4, HIGH);
 }
 
-//Esquerda - Direita
+//Esquerda - Direita (Loop)
 void LeftRight(int d) {
 
-  //...
+  //TODO: its just multiply the speed of one side...
+  //spin instead of turn if velocity = 0 (stopped)
 }
 
-//Freio Traseiro
-void RearBreak() {
+void Break() {
 
-  //...
-}
-
-//Freio Dianteiro
-void FrontBreak() {
-
-  //...
+  //TODO: set all speed to 0 instantly, and all directions to LOW
 }
 
 //Luzes
 void ToggleLight() {
 
-  //...
+  //TODO: just lightup a led
 }
 
 //Reset
 void Reset() {
 
-  //...
+  //TODO: reset arduino
 }
 
 void setup() {
