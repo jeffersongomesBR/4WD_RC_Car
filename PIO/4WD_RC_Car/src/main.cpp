@@ -32,6 +32,8 @@ int hBridge[6] = {D1, D2, D3, D4, ENA, ENB};
 int velocity = 0; //-255/255
 int targetSpeed = 0; //0-255
 int turnDirection = 0; //-1 = Left, 1 = Right //Unused
+int left = 0; //left speed
+int right = 0; //right speed
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 char stream; //Received bluetooth data
@@ -40,7 +42,6 @@ unsigned long previusTime = 0; //ms
 /// ---Codigo--- ///
 
 //Velocidade (Loop)
-//TODO: Will include turn speed
 void UpdateSpeed() {
 
   if(velocity < targetSpeed) {
@@ -63,35 +64,8 @@ void UpdateSpeed() {
   }
 
   //Split velocity to left and right
-  int left = abs(velocity);
-  int right = left;
-
-  //turn speeds
-  if(turnDirection < 0) {
-
-    left += left;
-  }
-  else if(turnDirection > 0) {
-
-    right += right;
-  }
-
-  //Fix values to bellow 255
-  if(left > 255) {
-
-    right -= left - 255;
-    left = 255;
-  }
-
-  if(right > 255) {
-
-    left -= right - 255;
-    right = 255;
-  }
-
-  //Apply speed values
-  analogWrite(ENA, left);
-  analogWrite(ENB, right);
+  left = abs(velocity);
+  right = left;
 }
 
 //Frente - ré (Loop)
@@ -117,10 +91,32 @@ void FowardBackward() {
 }
 
 //Esquerda - Direita (Loop)
-void LeftRight(int d) {
+void LeftRight() {
 
-  //TODO: its just multiply the speed of one side...
-  //spin instead of turn if velocity = 0 (stopped)
+  //Turn speeds
+  if(turnDirection < 0) {
+
+    left += left;
+  }
+  else if(turnDirection > 0) {
+
+    right += right;
+  }
+
+  //Fix values to bellow 255
+  if(left > 255) {
+
+    right -= left - 255;
+    left = 255;
+  }
+
+  if(right > 255) {
+
+    left -= right - 255;
+    right = 255;
+  }
+
+  //TODO: spin instead of turn if velocity = 0 (stopped)
 }
 
 void Break() {
@@ -171,6 +167,16 @@ void loop() {
 
     FowardBackward();
   }
+
+  if(turnDirection != 0) {
+
+    LeftRight();
+  }
+
+  //Apply speed values
+  analogWrite(ENA, left);
+  analogWrite(ENB, right);
+
   //TODO: Control by seting target speeds
   //TODO: Missing Loops (check functions!)
 }
