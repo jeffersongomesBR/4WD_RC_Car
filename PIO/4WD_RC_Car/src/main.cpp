@@ -12,13 +12,13 @@
 
 //TODO: need tests with bluetooth module
 /// ---Controles--- ///
-#define Foward w //Unused
-#define Backward s //Unused
-#define Left a //Unused
-#define Right d //Unused
-#define Stop x //Unused
-#define Light l //Unused
-#define Reset r //Unused
+#define Foward 'w' //Unused
+#define Backward 's' //Unused
+#define Left 'a' //Unused
+#define Right 'd' //Unused
+#define Stop 'x' //Unused
+#define Light 'l' //Unused
+#define Reset 'r' //Unused
 
 /// ---Definições--- ///
 const int deltaV = 2; //Utilizado na interpolação da velocidade
