@@ -130,10 +130,47 @@ void ToggleLight() {
   //TODO: just lightup a led
 }
 
-//Reset
-void Reset() {
+//Reset Board
+void(*ResetBoard) (void) = 0;
 
-  //TODO: reset arduino
+void Control(char key) {
+
+  if(key == Foward) {
+
+    Serial.print("Foward");
+  }
+
+  if(key == Backward) {
+
+    Serial.print("Backward");
+  }
+  
+  if(key == Left) {
+
+    Serial.print("Left");
+  }
+
+  if(key == Right) {
+
+    Serial.print("Right");
+  }
+
+  if(key == Stop) {
+
+    Serial.print("Stop");
+  }
+
+  if(key == Light) {
+
+    Serial.print("Light");
+  }
+
+  if(key == Reset) {
+
+    Serial.print("Restarting...");
+    delay(3000);
+    ResetBoard();
+  }
 }
 
 void setup() {
@@ -149,10 +186,11 @@ void setup() {
 
 void loop() {
 
-  //TODO: does buffer clear after read?
+  //stream only change after new read!
   if(Serial.available() > 0) {
 
     stream = Serial.read();
+    Control(stream);
   }
 
   unsigned long currentTime = millis();
