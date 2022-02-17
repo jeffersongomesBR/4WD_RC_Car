@@ -29,10 +29,9 @@ const int highSpeed = 255; //Maximo 255
 
 /// ---Variaveis--- ///
 int hBridge[6] = {D1, D2, D3, D4, ENA, ENB};
-int velocity = 0; //0-255
+int velocity = 0; //-255/255
 int targetSpeed = 0; //0-255
-int moveDirection = 0; //-1 = reverse, 0 = stopped, 1 = forward //Unused
-int turnDirection = 0; //-1 = Left, 0 = stopped, 1 = Right //Unused
+int turnDirection = 0; //-1 = Left, 1 = Right //Unused
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 char stream; //Received bluetooth data
@@ -62,23 +61,59 @@ void UpdateSpeed() {
 
     velocity = targetSpeed;
   }
+
+  //Split velocity to left and right
+  int left = abs(velocity);
+  int right = left;
+
+  //turn speeds
+  if(turnDirection < 0) {
+
+    left += left;
+  }
+  else if(turnDirection > 0) {
+
+    right += right;
+  }
+
+  //Fix values to bellow 255
+  if(left > 255) {
+
+    right -= left - 255;
+    left = 255;
+  }
+
+  if(right > 255) {
+
+    left -= right - 255;
+    right = 255;
+  }
+
+  //Apply speed values
+  analogWrite(ENA, left);
+  analogWrite(ENB, right);
 }
 
 //Frente - ré (Loop)
-//TODO: Finish this
-void FowardBackward(int d) {
+//TODO: Test
+void FowardBackward() {
 
-  //Foward
-  digitalWrite(D1, HIGH);
-  digitalWrite(D2, LOW);
-  digitalWrite(D3, HIGH);
-  digitalWrite(D4, LOW);
+  if(velocity > 0) {
 
-  //Backward
-  digitalWrite(D1, LOW);
-  digitalWrite(D2, HIGH);
-  digitalWrite(D3, LOW);
-  digitalWrite(D4, HIGH);
+    //Foward
+    digitalWrite(D1, HIGH);
+    digitalWrite(D2, LOW);
+    digitalWrite(D3, HIGH);
+    digitalWrite(D4, LOW);
+  }
+  else if (velocity < 0) {
+
+    //Backward
+    digitalWrite(D1, LOW);
+    digitalWrite(D2, HIGH);
+    digitalWrite(D3, LOW);
+    digitalWrite(D4, HIGH);
+  }
 }
 
 //Esquerda - Direita (Loop)
@@ -132,6 +167,10 @@ void loop() {
     UpdateSpeed();
   }
 
+  if(velocity != 0) {
+
+    FowardBackward();
+  }
   //TODO: Control by seting target speeds
   //TODO: Missing Loops (check functions!)
 }
