@@ -36,6 +36,7 @@ int left = 0; //left speed
 int right = 0; //right speed
 bool lightON = false; //Unused
 bool stopped = false; //Unused
+bool signal = false; //blink led
 char stream; //Received bluetooth data
 unsigned long previusTime = 0; //ms
 
@@ -43,6 +44,18 @@ unsigned long previusTime = 0; //ms
 
 //Velocidade (Loop)
 void UpdateSpeed() {
+
+  //Activity
+  if(signal) {
+
+    digitalWrite(LED_BUILTIN, LOW);
+    signal = false;
+  }
+  else  {
+
+    digitalWrite(LED_BUILTIN, HIGH);
+    signal = true;
+  }
 
   if(velocity < targetSpeed) {
 
