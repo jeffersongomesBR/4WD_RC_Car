@@ -146,6 +146,15 @@ void Control(char key) {
     
     switch(targetSpeed) {
 
+      case highSpeed * -1:
+        targetSpeed = mediumSpeed * -1;
+        break;
+      case mediumSpeed * -1:
+        targetSpeed = lowSpeed * -1;
+        break;
+      case lowSpeed * -1:
+        targetSpeed = 0;
+        break;
       case 0:
         targetSpeed = lowSpeed;
         break;
@@ -167,11 +176,20 @@ void Control(char key) {
       case highSpeed:
         targetSpeed = mediumSpeed;
         break;
+      case mediumSpeed:
+        targetSpeed = lowSpeed;
+        break;
       case lowSpeed:
         targetSpeed = 0;
         break;
-      case mediumSpeed:
-        targetSpeed = lowSpeed;
+      case 0:
+        targetSpeed = lowSpeed * -1;
+        break;
+      case lowSpeed * -1:
+        targetSpeed = mediumSpeed * -1;
+        break;
+      case mediumSpeed * -1:
+        targetSpeed = highSpeed * -1;
         break;
     }
   }
@@ -179,11 +197,18 @@ void Control(char key) {
   if(key == Left) {
 
     Serial.println("Left");
+
+    if(turnDirection >= 0) {
+
+      turnDirection--;
+    }
   }
 
   if(key == Right) {
 
     Serial.println("Right");
+
+    
   }
 
   if(key == Stop) {
