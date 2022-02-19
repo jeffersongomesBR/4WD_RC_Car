@@ -22,10 +22,12 @@
 
 /// ---Definições--- ///
 const int deltaV = 2; //Utilizado na interpolação da velocidade
-const int speedUpRate = 100; //Frequencia de atualização de velocidade (ms)
+const int speedUpRate = 100; //Tempo de atualização de velocidade (ms)
 const int lowSpeed = 64; //Minimo 0
 const int mediumSpeed = 128;
 const int highSpeed = 255; //Maximo 255
+const int dbgRate = 1000; //Mesma coisa do speedUpRate
+const bool serialDebug = true;
 
 /// ---Variaveis--- ///
 int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
@@ -38,24 +40,13 @@ bool lightON = false; //Unused
 bool stopped = false; //Unused
 bool signal = false; //blink led
 char stream; //Received bluetooth data
-unsigned long previusTime = 0; //ms
+unsigned long preTimeSpeed = 0; //loop checkpoint
+unsigned long preTimeDbg = 0; //loop checkpoint
 
 /// ---Codigo--- ///
 
 //Velocidade (Loop)
 void UpdateSpeed() {
-
-  //Activity
-  if(signal) {
-
-    digitalWrite(LED_BUILTIN, LOW);
-    signal = false;
-  }
-  else  {
-
-    digitalWrite(LED_BUILTIN, HIGH);
-    signal = true;
-  }
 
   if(velocity < targetSpeed) {
 
@@ -152,11 +143,37 @@ void Control(char key) {
     //TODO: speed variations
 
     Serial.println("Foward");
+    
+    switch(targetSpeed) {
+
+      case 0:
+        targetSpeed = lowSpeed;
+        break;
+      case lowSpeed:
+        targetSpeed = mediumSpeed;
+        break;
+      case mediumSpeed:
+        targetSpeed = highSpeed;
+        break;
+    }
   }
 
   if(key == Backward) {
 
     Serial.println("Backward");
+    
+    switch(targetSpeed) {
+
+      case highSpeed:
+        targetSpeed = mediumSpeed;
+        break;
+      case lowSpeed:
+        targetSpeed = 0;
+        break;
+      case mediumSpeed:
+        targetSpeed = lowSpeed;
+        break;
+    }
   }
   
   if(key == Left) {
@@ -187,6 +204,32 @@ void Control(char key) {
   }
 }
 
+void Activity() {
+
+  if(signal) {
+
+    digitalWrite(LED_BUILTIN, LOW);
+    signal = false;
+  }
+  else  {
+
+    digitalWrite(LED_BUILTIN, HIGH);
+    signal = true;
+  }
+}
+
+void Dbg() {
+
+  Activity();
+
+  //Debug var
+  Serial.println("/// Debug ///");
+  Serial.println((String)"velocity=" + velocity);
+  Serial.println((String)"targetSpeed=" + targetSpeed);
+  Serial.println((String)"left=" + left);
+  Serial.println((String)"right=" + right);
+}
+
 void setup() {
 
   //Set hBridge as output
@@ -207,12 +250,22 @@ void loop() {
     Control(stream);
   }
 
+  //Chronometer
   unsigned long currentTime = millis();
 
-  if(currentTime - previusTime >= speedUpRate) {
+  if(currentTime - preTimeSpeed >= speedUpRate) {
     
-    previusTime = currentTime;
+    preTimeSpeed = currentTime;
     UpdateSpeed();
+  }
+
+  if(serialDebug) {
+    
+    if(currentTime - preTimeDbg >= dbgRate) {
+
+      preTimeDbg = currentTime;
+      Dbg();
+    }
   }
 
   if(velocity != 0) {
