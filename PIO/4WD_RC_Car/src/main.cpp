@@ -3,12 +3,12 @@
 /// ---Pinos--- ///
 
 //Ponte H
-#define D1 3 //Unused
-#define D2 4 //Unused
-#define D3 5 //Unused
-#define D4 6 //Unused
-#define ENA 8 //PWM~ //Unused
-#define ENB 6 //PWM~ //Unused
+#define IN1 2 //Unused
+#define IN2 3 //Unused
+#define IN3 4 //Unused
+#define IN4 5 //Unused
+#define ENA A0 //PWM~ //Unused
+#define ENB A1 //PWM~ //Unused
 
 //TODO: need tests with bluetooth module
 /// ---Controles--- ///
@@ -28,7 +28,7 @@ const int mediumSpeed = 128;
 const int highSpeed = 255; //Maximo 255
 
 /// ---Variaveis--- ///
-int hBridge[6] = {D1, D2, D3, D4, ENA, ENB};
+int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 int velocity = 0; //-255/255
 int targetSpeed = 0; //0-255
 int turnDirection = 0; //-1 = Left, 1 = Right //Unused
@@ -88,18 +88,18 @@ void FowardBackward() {
   if(velocity > 0) {
 
     //Foward
-    digitalWrite(D1, HIGH);
-    digitalWrite(D2, LOW);
-    digitalWrite(D3, HIGH);
-    digitalWrite(D4, LOW);
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
   }
   else if (velocity < 0) {
 
     //Backward
-    digitalWrite(D1, LOW);
-    digitalWrite(D2, HIGH);
-    digitalWrite(D3, LOW);
-    digitalWrite(D4, HIGH);
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
   }
 }
 
@@ -149,38 +149,39 @@ void(*ResetBoard) (void) = 0;
 void Control(char key) {
 
   if(key == Foward) {
+    //TODO: speed variations
 
-    Serial.print("Foward");
+    Serial.println("Foward");
   }
 
   if(key == Backward) {
 
-    Serial.print("Backward");
+    Serial.println("Backward");
   }
   
   if(key == Left) {
 
-    Serial.print("Left");
+    Serial.println("Left");
   }
 
   if(key == Right) {
 
-    Serial.print("Right");
+    Serial.println("Right");
   }
 
   if(key == Stop) {
 
-    Serial.print("Stop");
+    Serial.println("Stop");
   }
 
   if(key == Light) {
 
-    Serial.print("Light");
+    Serial.println("Light");
   }
 
   if(key == Reset) {
 
-    Serial.print("Restarting...");
+    Serial.println("Restarting...");
     delay(3000);
     ResetBoard();
   }
