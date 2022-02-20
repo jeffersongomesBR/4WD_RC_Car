@@ -100,23 +100,23 @@ void LeftRight() {
   //Turn speeds
   if(turnDirection < 0) {
 
-    left += left;
+    left = left + left;
   }
   else if(turnDirection > 0) {
 
-    right += right;
+    right = right + right;
   }
 
   //Fix values to bellow 255
   if(left > 255) {
 
-    right -= left - 255;
+    right = right - (left - 255);
     left = 255;
   }
 
   if(right > 255) {
 
-    left -= right - 255;
+    left = left - (right - 255);
     right = 255;
   }
 
@@ -126,6 +126,10 @@ void LeftRight() {
 void Break() {
 
   //TODO: set all speed to 0 instantly, and all directions to LOW
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
 }
 
 //Luzes
@@ -198,22 +202,25 @@ void Control(char key) {
 
     Serial.println("Left");
 
-    if(turnDirection >= 0) {
-
+    if(turnDirection >= 0)
       turnDirection--;
-    }
   }
 
   if(key == Right) {
 
     Serial.println("Right");
 
-    
+    if(turnDirection <= 0)
+      turnDirection++;
   }
 
   if(key == Stop) {
 
     Serial.println("Stop");
+
+    turnDirection = 0;
+    targetSpeed = 0;
+    Break();
   }
 
   if(key == Light) {
