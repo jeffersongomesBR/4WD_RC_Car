@@ -7,8 +7,8 @@
 #define IN2 3 //Unused
 #define IN3 4 //Unused
 #define IN4 5 //Unused
-#define ENA A0 //PWM~ //Unused
-#define ENB A1 //PWM~ //Unused
+#define ENA 10 //PWM~ //Unused
+#define ENB 11 //PWM~ //Unused
 
 //TODO: need tests with bluetooth module
 /// ---Controles--- ///
