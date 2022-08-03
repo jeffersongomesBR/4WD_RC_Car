@@ -21,7 +21,7 @@
 #define Reset 'r' //Unused
 
 /// ---Definições--- ///
-const int deltaV = 2; //Utilizado na interpolação da velocidade
+const int deltaV = 8; //Utilizado na interpolação da velocidade
 const int speedUpRate = 100; //Tempo de atualização de velocidade (ms)
 const int lowSpeed = 64; //Minimo 0
 const int mediumSpeed = 128;
@@ -100,27 +100,49 @@ void LeftRight() {
   //Turn speeds
   if(turnDirection < 0) {
 
-    left = left + left;
+    if(velocity > 0) {
+
+      left = left + left;
+      right /= 2;
+    }
+    else {
+
+      left = lowSpeed;
+      right = lowSpeed * -1;
+    }
   }
   else if(turnDirection > 0) {
 
-    right = right + right;
+    if(velocity > 0) {
+
+      right = right + right;
+      left /= 2;
+    }
+    else {
+
+      right = lowSpeed;
+      left = lowSpeed * -1;
+    }
   }
 
   //Fix values to bellow 255
   if(left > 255) {
 
-    right = right - (left - 255);
     left = 255;
+  }
+  else if(left < -255) {
+
+    left = -255;
   }
 
   if(right > 255) {
 
-    left = left - (right - 255);
     right = 255;
   }
+  else if(right <-255) {
 
-  //TODO: spin instead of turn if velocity = 0 (stopped)
+    right = -255;
+  }
 }
 
 void Break() {
