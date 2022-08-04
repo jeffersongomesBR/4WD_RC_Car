@@ -3,22 +3,23 @@
 /// ---Pinos--- ///
 
 //Ponte H
-#define IN1 2 //Unused
-#define IN2 3 //Unused
-#define IN3 4 //Unused
-#define IN4 5 //Unused
-#define ENA 10 //PWM~ //Unused
-#define ENB 11 //PWM~ //Unused
+#define IN1 2
+#define IN2 3
+#define IN3 4
+#define IN4 5
+#define ENA 10 //PWM~
+#define ENB 11 //PWM~
 
-//TODO: need tests with bluetooth module
-/// ---Controles--- ///
-#define Foward 'w' //Unused
-#define Backward 's' //Unused
-#define Left 'a' //Unused
-#define Right 'd' //Unused
-#define Stop 'x' //Unused
+/// ---Comandos--- ///
+
+//Keys
+#define Foward 'w'
+#define Backward 's'
+#define Left 'a'
+#define Right 'd'
+#define Stop 'x'
 #define Light 'l' //Unused
-#define Reset 'r' //Unused
+#define Reset 'r'
 
 /// ---Definições--- ///
 const int deltaV = 8; //Utilizado na interpolação da velocidade
@@ -27,13 +28,13 @@ const int lowSpeed = 64; //Minimo 0
 const int mediumSpeed = 128;
 const int highSpeed = 255; //Maximo 255
 const int dbgRate = 1000; //Mesma coisa do speedUpRate
-const bool serialDebug = true;
+const bool serialDebug = true; //Enviar variaveis ao monitor serial
 
 /// ---Variaveis--- ///
 int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 int velocity = 0; //-255/255
 int targetSpeed = 0; //0-255
-int turnDirection = 0; //-1 = Left, 1 = Right //Unused
+int turnDirection = 0; //-1 = Left, 1 = Right
 int left = 0; //left speed (0-255)
 int right = 0; //right speed (0-255)
 bool lightON = false; //Unused
@@ -248,6 +249,7 @@ void Control(char key) {
   if(key == Light) {
 
     Serial.println("Light");
+    //TODO: Headlight
   }
 
   if(key == Reset) {
@@ -284,6 +286,7 @@ void Dbg() {
   Serial.println((String)"right=" + right);
 }
 
+//WARN: INPUT DOEST WORK AT STARTUP!
 void setup() {
 
   //Set hBridge as output
@@ -298,7 +301,7 @@ void setup() {
   for(int i = 0; i < 5; i++) {
 
     Activity();
-    delay(1);
+    delay(1000);
   }
 }
 
