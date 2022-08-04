@@ -34,8 +34,8 @@ int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 int velocity = 0; //-255/255
 int targetSpeed = 0; //0-255
 int turnDirection = 0; //-1 = Left, 1 = Right //Unused
-int left = 0; //left speed
-int right = 0; //right speed
+int left = 0; //left speed (0-255)
+int right = 0; //right speed (0-255)
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 bool signal = false; //blink led
@@ -293,6 +293,13 @@ void setup() {
   }
 
   Serial.begin(9600);
+  Serial.println("Starting...");
+
+  for(int i = 0; i < 5; i++) {
+
+    Activity();
+    delay(1);
+  }
 }
 
 void loop() {
