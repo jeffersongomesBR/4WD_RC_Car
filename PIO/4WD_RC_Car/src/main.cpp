@@ -19,7 +19,6 @@
 #define Right 'd'
 #define Stop 'x'
 #define Light 'l' //Unused
-#define Reset 'r'
 
 /// ---Definições--- ///
 const int deltaV = 8; //Utilizado na interpolação da velocidade
@@ -161,8 +160,6 @@ void ToggleLight() {
   //TODO: just lightup a led
 }
 
-//Reset Board
-void(*ResetBoard) (void) = 0;
 
 void Control(char key) {
 
@@ -252,11 +249,9 @@ void Control(char key) {
     //TODO: Headlight
   }
 
-  if(key == Reset) {
 
     Serial.println("Restarting...");
     delay(3000);
-    ResetBoard();
   }
 }
 
