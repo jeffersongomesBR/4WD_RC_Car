@@ -11,6 +11,7 @@
 #define ENB 11 //PWM~
 
 /// ---Comandos--- ///
+#define KeyPrefix '/'
 
 //Keys
 #define Foward 'w'
@@ -18,6 +19,8 @@
 #define Left 'a'
 #define Right 'd'
 #define Stop 'x'
+#define GearUp '+'
+#define GearDown '-'
 #define Light 'l' //Unused
 
 /// ---Definições--- ///
@@ -39,7 +42,6 @@ int right = 0; //right speed (0-255)
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 bool signal = false; //blink led
-char stream; //Received bluetooth data
 unsigned long preTimeSpeed = 0; //loop checkpoint
 unsigned long preTimeDbg = 0; //loop checkpoint
 
@@ -159,12 +161,26 @@ void ToggleLight() {
 
   //TODO: just lightup a led
 }
+void ReadKey(char key) {
 
+  if(key == GearUp) {
+    //TODO: speed variations
 
-void Control(char key) {
+    gear++;
+
+    if(debug)
+    Serial.println("GearUp to: " + gear);
+  }
+
+  if(key == GearDown) {
+
+    gear--;
+
+    if(debug)
+    Serial.println("GearDown to: " + gear);
+  }
 
   if(key == Foward) {
-    //TODO: speed variations
 
     Serial.println("Foward");
     
@@ -191,7 +207,7 @@ void Control(char key) {
     }
   }
 
-  if(key == Backward) {
+  if (key == Backward) {
 
     Serial.println("Backward");
     
