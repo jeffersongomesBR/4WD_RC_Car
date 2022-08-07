@@ -24,13 +24,10 @@
 #define Light 'l' //Unused
 
 /// ---Definições--- ///
-const int deltaV = 8; //Utilizado na interpolação da velocidade
-const int speedUpRate = 100; //Tempo de atualização de velocidade (ms)
-const int lowSpeed = 64; //Minimo 0
-const int mediumSpeed = 128;
-const int highSpeed = 255; //Maximo 255
 const int dbgRate = 1000; //Mesma coisa do speedUpRate
 const bool serialDebug = true; //Enviar variaveis ao monitor serial
+const uint8_t deltaV = 8; //Utilizado na interpolação da velocidade (0-255)
+const uint8_t speedUpRate = 100; //Tempo de atualização de velocidade (ms)
 
 /// ---Variaveis--- ///
 int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
@@ -52,19 +49,25 @@ void UpdateSpeed() {
 
   if(velocity < targetSpeed) {
 
-    velocity += deltaV;
-  }
-  else if (velocity > targetSpeed) {
+    case 1 :
+      velocity = firstGear;
+    break;
 
-    velocity -= deltaV;
-  }
+    case 2 :
+      velocity = secondGear;
+    break;
+
+    case 3 :
+      velocity = thirdGear;
+    break;
 
   //Get Difference between values
   int speedDifference = targetSpeed - velocity;
   speedDifference = abs(speedDifference);
 
-  //Round speed
-  if(speedDifference < deltaV) {
+    case 5 :
+      velocity = fivethGear;
+    break;
 
     velocity = targetSpeed;
   }
@@ -109,9 +112,8 @@ void LeftRight() {
     }
     else {
 
-      left = lowSpeed;
-      right = lowSpeed * -1;
-    }
+    digitalWrite(hBridge[0], 0);
+    digitalWrite(hBridge[1], 0);
   }
   else if(turnDirection > 0) {
 
@@ -122,9 +124,8 @@ void LeftRight() {
     }
     else {
 
-      right = lowSpeed;
-      left = lowSpeed * -1;
-    }
+    digitalWrite(hBridge[2], 0);
+    digitalWrite(hBridge[3], 1);
   }
 
   //Fix values to bellow 255
@@ -183,55 +184,15 @@ void ReadKey(char key) {
   if(key == Foward) {
 
     Serial.println("Foward");
-    
-    switch(targetSpeed) {
 
-      case highSpeed * -1:
-        targetSpeed = mediumSpeed * -1;
-        break;
-      case mediumSpeed * -1:
-        targetSpeed = lowSpeed * -1;
-        break;
-      case lowSpeed * -1:
-        targetSpeed = 0;
-        break;
-      case 0:
-        targetSpeed = lowSpeed;
-        break;
-      case lowSpeed:
-        targetSpeed = mediumSpeed;
-        break;
-      case mediumSpeed:
-        targetSpeed = highSpeed;
-        break;
-    }
+    SetDirection(1, 1);
   }
 
   if (key == Backward) {
 
     Serial.println("Backward");
-    
-    switch(targetSpeed) {
 
-      case highSpeed:
-        targetSpeed = mediumSpeed;
-        break;
-      case mediumSpeed:
-        targetSpeed = lowSpeed;
-        break;
-      case lowSpeed:
-        targetSpeed = 0;
-        break;
-      case 0:
-        targetSpeed = lowSpeed * -1;
-        break;
-      case lowSpeed * -1:
-        targetSpeed = mediumSpeed * -1;
-        break;
-      case mediumSpeed * -1:
-        targetSpeed = highSpeed * -1;
-        break;
-    }
+    SetDirection(-1, -1);
   }
   
   if(key == Left) {
@@ -269,6 +230,55 @@ void ReadKey(char key) {
     Serial.println("Restarting...");
     delay(3000);
   }
+
+/*
+  //Turn speeds
+  if(turnDirection < 0) {
+
+    if(velocity > 0) {
+
+      left += left;
+      right /= 2;
+    }
+    else {
+
+      left = lowSpeed;
+      right = lowSpeed * -1;
+    }
+  }
+  else if(turnDirection > 0) {
+
+    if(velocity > 0) {
+
+      right = right + right;
+      left /= 2;
+    }
+    else {
+
+      right = lowSpeed;
+      left = lowSpeed * -1;
+    }
+  }
+
+  //Fix values to bellow 255
+  if(left > 255) {
+
+    left = 255;
+  }
+  else if(left < -255) {
+
+    left = -255;
+  }
+
+  if(right > 255) {
+
+    right = 255;
+  }
+  else if(right <-255) {
+
+    right = -255;
+  }
+*/
 }
 
 void Activity() {
