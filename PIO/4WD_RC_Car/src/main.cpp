@@ -228,11 +228,11 @@ void ReadKey(char key) {
 
     //TODO: Headlight
     if(debug)
-    Serial.println("Light");
+    Serial.println("Light not implemented yet");
   }
 }
 
-//WARN: INPUT DOEST WORK AT STARTUP!
+//WARN: INPUT DOESN'T WORK AT STARTUP!
 void setup() {
 
   //Set hBridge as output
