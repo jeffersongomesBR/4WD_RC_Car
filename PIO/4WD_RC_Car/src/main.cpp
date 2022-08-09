@@ -313,15 +313,4 @@ void loop() {
       Dbg();
     }
   }
-
-  if(turnDirection != 0) {
-
-    LeftRight();
-  }
-
-  //Apply speed values
-  SetSpeed(left, right);
-
-  //TODO: Control by seting target speeds
-  //TODO: Missing Loops (check functions!)
 }
