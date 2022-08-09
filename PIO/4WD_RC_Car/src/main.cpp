@@ -94,7 +94,6 @@ void UpdateSpeed() {
 //TODO: Need tests
 void SetDirection(int8_t leftWheel, int8_t rightWheel) {
 
-  if(velocity > 0) {
   //Left-------------------------------
   if(leftWheel < 0) {
 
