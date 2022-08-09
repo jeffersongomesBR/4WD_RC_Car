@@ -130,16 +130,17 @@ void SetDirection(int8_t leftWheel, int8_t rightWheel) {
   }
 }
 
+//Set left/right wheels speed
+void SetSpeed(uint8_t leftWheel, uint8_t rightWheel) {
 
+  analogWrite(hBridge[4], leftWheel);
+  analogWrite(hBridge[5], rightWheel);
 }
 
-void Break() {
+//Set both wheels speed
+void SetSpeed(uint8_t speed) {
 
-  //TODO: set all speed to 0 instantly, and all directions to LOW
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
+  SetSpeed(speed, speed);
 }
 
 //Luzes
@@ -337,6 +338,7 @@ void loop() {
     UpdateSpeed();
   }
 
+  //TODO: remove this
   if(serialDebug) {
     
     if(currentTime - preTimeDbg >= dbgRate) {
@@ -352,8 +354,7 @@ void loop() {
   }
 
   //Apply speed values
-  analogWrite(ENA, left);
-  analogWrite(ENB, right);
+  SetSpeed(left, right);
 
   //TODO: Control by seting target speeds
   //TODO: Missing Loops (check functions!)
