@@ -279,12 +279,12 @@ void Activity() {
 
   if(signal) {
 
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(LED_BUILTIN, 0);
     signal = false;
   }
   else  {
 
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(LED_BUILTIN, 1);
     signal = true;
   }
 }
