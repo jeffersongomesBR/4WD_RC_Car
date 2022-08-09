@@ -202,8 +202,8 @@ void ReadKey(char key) {
     if(debug)
     Serial.println("Left");
 
-    if(turnDirection >= 0)
-      turnDirection--;
+    SetDirection(-1, 1);
+    //turnDirection = turnDirection >= 0 ? turnDirection-- : -1; <- Unused
   }
 
   if(key == Right) {
@@ -211,8 +211,8 @@ void ReadKey(char key) {
     if(debug)
     Serial.println("Right");
 
-    if(turnDirection <= 0)
-      turnDirection++;
+    SetDirection(1, -1);
+    //turnDirection = turnDirection <= 0 ? turnDirection++ : 1; <- Unused
   }
 
   if(key == Stop) {
@@ -220,7 +220,7 @@ void ReadKey(char key) {
     if(debug)
     Serial.println("Stop");
 
-    turnDirection = 0;
+    //turnDirection = 0; <- Unused
     SetDirection(0, 0);
   }
 
