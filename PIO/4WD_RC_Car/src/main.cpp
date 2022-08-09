@@ -91,25 +91,18 @@ void UpdateSpeed() {
   right = left;
 }
 
-//Frente - ré (Loop)
-//TODO: Test
-void FowardBackward() {
+//TODO: Need tests
+void SetDirection(int8_t leftWheel, int8_t rightWheel) {
 
   if(velocity > 0) {
 
-    //Foward
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
+    digitalWrite(hBridge[0], 0);
+    digitalWrite(hBridge[1], 1);
   }
   else if (velocity < 0) {
 
-    //Backward
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4, HIGH);
+    digitalWrite(hBridge[0], 1);
+    digitalWrite(hBridge[1], 0);
   }
 }
 
@@ -235,7 +228,7 @@ void ReadKey(char key) {
     Serial.println("Stop");
 
     turnDirection = 0;
-    Break();
+    SetDirection(0, 0);
   }
 
   if(key == Light) {
@@ -373,11 +366,6 @@ void loop() {
       preTimeDbg = currentTime;
       Dbg();
     }
-  }
-
-  if(velocity != 0) {
-
-    FowardBackward();
   }
 
   if(turnDirection != 0) {
