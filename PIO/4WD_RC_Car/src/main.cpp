@@ -53,6 +53,23 @@ u32 preTimeDbg = 0; //loop checkpoint
 
 /// ---Codigo--- ///
 
+//Read serial buffer and clear it
+void ReadBuffer() {
+
+  int buffer[64];
+  int lenght = Serial.available();
+  bool hasKeyPrefix = Serial.find(KeyPrefix);
+
+  for(int i = 0; i < lenght; i++) {
+
+    buffer[i] = Serial.read();
+  }
+
+  if(hasKeyPrefix) {
+
+    ReadKey(buffer[1]);
+  }
+}
 void UpdateSpeed() {
 
   switch (gear) {
@@ -251,60 +268,6 @@ void setup() {
     delay(1000);
   }
 }
-  }
-
-
-  }
-
-/*
-  //Turn speeds
-  if(turnDirection < 0) {
-
-    if(velocity > 0) {
-
-      left += left;
-      right /= 2;
-    }
-    else {
-
-      left = lowSpeed;
-      right = lowSpeed * -1;
-    }
-  }
-  else if(turnDirection > 0) {
-
-    if(velocity > 0) {
-
-      right = right + right;
-      left /= 2;
-    }
-    else {
-
-      right = lowSpeed;
-      left = lowSpeed * -1;
-    }
-  }
-
-  //Fix values to bellow 255
-  if(left > 255) {
-
-    left = 255;
-  }
-  else if(left < -255) {
-
-    left = -255;
-  }
-
-  if(right > 255) {
-
-    right = 255;
-  }
-  else if(right <-255) {
-
-    right = -255;
-  }
-*/
-}
 
 void Activity() {
 
@@ -334,12 +297,8 @@ void Dbg() {
 
 void loop() {
 
-  //stream only change after new read!
-  if(Serial.available() > 0) {
-
-    stream = Serial.read();
-    Control(stream);
-  }
+  if(Serial.available() > 0)
+  ReadBuffer();
 
   //Chronometer
   unsigned long currentTime = millis();
