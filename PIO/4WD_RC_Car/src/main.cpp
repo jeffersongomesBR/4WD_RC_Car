@@ -30,10 +30,17 @@ const uint8_t deltaV = 8; //Utilizado na interpolação da velocidade (0-255)
 const uint8_t speedUpRate = 100; //Tempo de atualização de velocidade (ms)
 const uint16_t dbgRate = 1000; //Mesma coisa do speedUpRate
 
+//Velocidades
+const uint8_t firstGear = 43; //Minimo 0
+const uint8_t secondGear = 86;
+const uint8_t thirdGear = 129;
+const uint8_t fourthGear = 172;
+const uint8_t fivethGear = 215;
+const uint8_t sixGear = 255; //Maximo 255
+
 /// ---Variaveis--- ///
 int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 int velocity = 0; //-255/255
-int targetSpeed = 0; //0-255
 int turnDirection = 0; //-1 = Left, 1 = Right
 int left = 0; //left speed (0-255)
 int right = 0; //right speed (0-255)
@@ -42,13 +49,13 @@ bool stopped = false; //Unused
 bool signal = false; //blink led
 unsigned long preTimeSpeed = 0; //loop checkpoint
 unsigned long preTimeDbg = 0; //loop checkpoint
+uint8_t gear = 0; //0-6
 
 /// ---Codigo--- ///
 
-//Velocidade (Loop)
 void UpdateSpeed() {
 
-  if(velocity < targetSpeed) {
+  switch (gear) {
 
     case 1 :
       velocity = firstGear;
@@ -62,15 +69,21 @@ void UpdateSpeed() {
       velocity = thirdGear;
     break;
 
-  //Get Difference between values
-  int speedDifference = targetSpeed - velocity;
-  speedDifference = abs(speedDifference);
+    case 4 :
+      velocity = fourthGear;
+    break;
 
     case 5 :
       velocity = fivethGear;
     break;
 
-    velocity = targetSpeed;
+    case 6 :
+      velocity = sixGear;
+    break;
+    
+    default :
+      velocity = 0;
+    break;
   }
 
   //Split velocity to left and right
@@ -222,7 +235,6 @@ void ReadKey(char key) {
     Serial.println("Stop");
 
     turnDirection = 0;
-    targetSpeed = 0;
     Break();
   }
 
