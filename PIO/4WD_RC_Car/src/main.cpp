@@ -39,17 +39,17 @@ const uint8_t fivethGear = 215;
 const uint8_t sixGear = 255; //Maximo 255
 
 /// ---Variaveis--- ///
-int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
-int velocity = 0; //-255/255
-int turnDirection = 0; //-1 = Left, 1 = Right
-int left = 0; //left speed (0-255)
-int right = 0; //right speed (0-255)
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 bool signal = false; //blink led
-unsigned long preTimeSpeed = 0; //loop checkpoint
-unsigned long preTimeDbg = 0; //loop checkpoint
+uint8_t hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 uint8_t gear = 0; //0-6
+uint8_t turnDirection = 0; //-1 = Left, 1 = Right
+uint8_t left = 0; //left speed (0-255)
+uint8_t right = 0; //right speed (0-255)
+int16_t velocity = 0; //-255/255
+u32 preTimeSpeed = 0; //loop checkpoint
+u32 preTimeDbg = 0; //loop checkpoint
 
 /// ---Codigo--- ///
 
