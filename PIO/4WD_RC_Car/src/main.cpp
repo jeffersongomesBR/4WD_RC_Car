@@ -218,6 +218,26 @@ void ReadKey(char key) {
     Serial.println("Light");
   }
 }
+
+//WARN: INPUT DOEST WORK AT STARTUP!
+void setup() {
+
+  //Set hBridge as output
+  for(int i = 0; i < 6; i++) {
+
+    pinMode(hBridge[i], OUTPUT);
+  }
+
+  Serial.begin(9600);
+  Serial.println("Starting...");
+
+  //Blink led
+  for(int i = 0; i < 5; i++) {
+
+    Activity();
+    delay(1000);
+  }
+}
   }
 
 
@@ -299,25 +319,6 @@ void Dbg() {
   Serial.println((String)"targetSpeed=" + targetSpeed);
   Serial.println((String)"left=" + left);
   Serial.println((String)"right=" + right);
-}
-
-//WARN: INPUT DOEST WORK AT STARTUP!
-void setup() {
-
-  //Set hBridge as output
-  for(int i = 0; i < 6; i++) {
-
-    pinMode(hBridge[i], OUTPUT);
-  }
-
-  Serial.begin(9600);
-  Serial.println("Starting...");
-
-  for(int i = 0; i < 5; i++) {
-
-    Activity();
-    delay(1000);
-  }
 }
 
 void loop() {
