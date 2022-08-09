@@ -70,6 +70,33 @@ void ReadBuffer() {
     ReadKey(buffer[1]);
   }
 }
+
+void Activity() {
+
+  if(signal) {
+
+    digitalWrite(LED_BUILTIN, 0);
+    signal = false;
+  }
+  else  {
+
+    digitalWrite(LED_BUILTIN, 1);
+    signal = true;
+  }
+}
+
+//Send vars to serial monitor
+void Dbg() {
+
+  Activity();
+
+  //Debug var
+  Serial.println("/// Debug ///");
+  Serial.println((String)"velocity=" + velocity);
+  Serial.println((String)"left=" + left);
+  Serial.println((String)"right=" + right);
+}
+
 void UpdateSpeed() {
 
   switch (gear) {
@@ -267,32 +294,6 @@ void setup() {
     Activity();
     delay(1000);
   }
-}
-
-void Activity() {
-
-  if(signal) {
-
-    digitalWrite(LED_BUILTIN, 0);
-    signal = false;
-  }
-  else  {
-
-    digitalWrite(LED_BUILTIN, 1);
-    signal = true;
-  }
-}
-
-void Dbg() {
-
-  Activity();
-
-  //Debug var
-  Serial.println("/// Debug ///");
-  Serial.println((String)"velocity=" + velocity);
-  Serial.println((String)"targetSpeed=" + targetSpeed);
-  Serial.println((String)"left=" + left);
-  Serial.println((String)"right=" + right);
 }
 
 void loop() {
