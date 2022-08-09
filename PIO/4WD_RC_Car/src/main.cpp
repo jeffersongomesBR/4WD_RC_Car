@@ -254,8 +254,6 @@ void setup() {
   }
 
 
-    Serial.println("Restarting...");
-    delay(3000);
   }
 
 /*
