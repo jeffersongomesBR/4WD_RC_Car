@@ -24,10 +24,11 @@
 #define Light 'l' //Unused
 
 /// ---Definições--- ///
-const int dbgRate = 1000; //Mesma coisa do speedUpRate
-const bool serialDebug = true; //Enviar variaveis ao monitor serial
+const bool serialDebug = true; //Enviar variaveis ao monitor serial (REMOVER EM RELEASE!)
+const bool debug = true; //Enviar eventos de debug ao monitor serial (REMOVER EM RELEASE!)
 const uint8_t deltaV = 8; //Utilizado na interpolação da velocidade (0-255)
 const uint8_t speedUpRate = 100; //Tempo de atualização de velocidade (ms)
+const uint16_t dbgRate = 1000; //Mesma coisa do speedUpRate
 
 /// ---Variaveis--- ///
 int hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
@@ -183,6 +184,7 @@ void ReadKey(char key) {
 
   if(key == Foward) {
 
+    if(debug)
     Serial.println("Foward");
 
     SetDirection(1, 1);
@@ -190,6 +192,7 @@ void ReadKey(char key) {
 
   if (key == Backward) {
 
+    if(debug)
     Serial.println("Backward");
 
     SetDirection(-1, -1);
@@ -197,6 +200,7 @@ void ReadKey(char key) {
   
   if(key == Left) {
 
+    if(debug)
     Serial.println("Left");
 
     if(turnDirection >= 0)
@@ -205,6 +209,7 @@ void ReadKey(char key) {
 
   if(key == Right) {
 
+    if(debug)
     Serial.println("Right");
 
     if(turnDirection <= 0)
@@ -213,6 +218,7 @@ void ReadKey(char key) {
 
   if(key == Stop) {
 
+    if(debug)
     Serial.println("Stop");
 
     turnDirection = 0;
@@ -224,6 +230,10 @@ void ReadKey(char key) {
 
     Serial.println("Light");
     //TODO: Headlight
+    if(debug)
+    Serial.println("Light");
+  }
+}
   }
 
 
