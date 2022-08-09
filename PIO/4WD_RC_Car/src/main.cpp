@@ -143,11 +143,12 @@ void SetSpeed(uint8_t speed) {
   SetSpeed(speed, speed);
 }
 
-//Luzes
-void ToggleLight() {
+//TODO: Console commands
+/*void ReadCommand(String command) {
 
-  //TODO: just lightup a led
-}
+  //...
+}*/
+
 void ReadKey(char key) {
 
   if(key == GearUp) {
@@ -212,7 +213,6 @@ void ReadKey(char key) {
 
   if(key == Light) {
 
-    Serial.println("Light");
     //TODO: Headlight
     if(debug)
     Serial.println("Light");
