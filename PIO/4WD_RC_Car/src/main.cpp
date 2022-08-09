@@ -57,6 +57,10 @@ void UpdateSpeed() {
 
   switch (gear) {
 
+    case 0 :
+      velocity = 0;
+    break;
+
     case 1 :
       velocity = firstGear;
     break;
@@ -82,14 +86,22 @@ void UpdateSpeed() {
     break;
     
     default :
-      velocity = 0;
+      if(gear > 6) {
+
+        gear = 6;
+      }
+
+      if(gear == 255) { //gear doesn't go negative
+
+        gear = 0;
+      }
     break;
   }
 
-  //Split velocity to left and right
-  left = abs(velocity);
-  right = left;
+  SetSpeed(velocity);
 }
+
+//TODO: UpdateRotation();
 
 //TODO: Need tests
 void SetDirection(int8_t leftWheel, int8_t rightWheel) {
@@ -154,6 +166,7 @@ void ReadKey(char key) {
     //TODO: speed variations
 
     gear++;
+    UpdateSpeed();
 
     if(debug)
     Serial.println("GearUp to: " + gear);
@@ -162,6 +175,7 @@ void ReadKey(char key) {
   if(key == GearDown) {
 
     gear--;
+    UpdateSpeed();
 
     if(debug)
     Serial.println("GearDown to: " + gear);
