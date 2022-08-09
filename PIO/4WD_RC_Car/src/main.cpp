@@ -95,64 +95,42 @@ void UpdateSpeed() {
 void SetDirection(int8_t leftWheel, int8_t rightWheel) {
 
   if(velocity > 0) {
+  //Left-------------------------------
+  if(leftWheel < 0) {
 
     digitalWrite(hBridge[0], 0);
     digitalWrite(hBridge[1], 1);
   }
-  else if (velocity < 0) {
+  else if (leftWheel > 0) {
 
     digitalWrite(hBridge[0], 1);
     digitalWrite(hBridge[1], 0);
   }
-}
-
-//Esquerda - Direita (Loop)
-void LeftRight() {
-
-  //Turn speeds
-  if(turnDirection < 0) {
-
-    if(velocity > 0) {
-
-      left = left + left;
-      right /= 2;
-    }
-    else {
+  else {
 
     digitalWrite(hBridge[0], 0);
     digitalWrite(hBridge[1], 0);
   }
-  else if(turnDirection > 0) {
 
-    if(velocity > 0) {
-
-      right = right + right;
-      left /= 2;
-    }
-    else {
+  //Right------------------------------
+  if(rightWheel < 0) {
 
     digitalWrite(hBridge[2], 0);
     digitalWrite(hBridge[3], 1);
   }
+  else if (rightWheel > 0) {
 
-  //Fix values to bellow 255
-  if(left > 255) {
-
-    left = 255;
+    digitalWrite(hBridge[2], 1);
+    digitalWrite(hBridge[3], 0);
   }
-  else if(left < -255) {
+  else {
 
-    left = -255;
+    digitalWrite(hBridge[2], 0);
+    digitalWrite(hBridge[3], 0);
   }
+}
 
-  if(right > 255) {
 
-    right = 255;
-  }
-  else if(right <-255) {
-
-    right = -255;
-  }
 }
 
 void Break() {
