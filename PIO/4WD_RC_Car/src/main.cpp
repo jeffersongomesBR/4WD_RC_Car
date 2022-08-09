@@ -26,9 +26,7 @@
 /// ---Definições--- ///
 const bool serialDebug = true; //Enviar variaveis ao monitor serial (REMOVER EM RELEASE!)
 const bool debug = true; //Enviar eventos de debug ao monitor serial (REMOVER EM RELEASE!)
-const uint8_t deltaV = 8; //Utilizado na interpolação da velocidade (0-255)
-const uint8_t speedUpRate = 100; //Tempo de atualização de velocidade (ms)
-const uint16_t dbgRate = 1000; //Mesma coisa do speedUpRate
+const uint16_t dbgRate = 1000; //Atraso de envio de informações ao monitor serial (ms)
 
 //Velocidades
 const uint8_t firstGear = 43; //Minimo 0
@@ -44,12 +42,9 @@ bool stopped = false; //Unused
 bool signal = false; //blink led
 uint8_t hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
 uint8_t gear = 0; //0-6
-uint8_t turnDirection = 0; //-1 = Left, 1 = Right
-uint8_t left = 0; //left speed (0-255)
-uint8_t right = 0; //right speed (0-255)
+uint8_t turnDirection = 0; //-1 = Left, 1 = Right //Unused
 int16_t velocity = 0; //-255/255
-u32 preTimeSpeed = 0; //loop checkpoint
-u32 preTimeDbg = 0; //loop checkpoint
+u32 preTimeDbg = 0; //usado pelo loop checkpoint
 
 /// ---Codigo--- ///
 
@@ -93,8 +88,6 @@ void Dbg() {
   //Debug var
   Serial.println("/// Debug ///");
   Serial.println((String)"velocity=" + velocity);
-  Serial.println((String)"left=" + left);
-  Serial.println((String)"right=" + right);
 }
 
 void UpdateSpeed() {
