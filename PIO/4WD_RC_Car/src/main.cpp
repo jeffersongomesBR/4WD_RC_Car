@@ -302,13 +302,7 @@ void loop() {
   ReadBuffer();
 
   //Chronometer
-  unsigned long currentTime = millis();
-
-  if(currentTime - preTimeSpeed >= speedUpRate) {
-    
-    preTimeSpeed = currentTime;
-    UpdateSpeed();
-  }
+  u32 currentTime = millis();
 
   //TODO: remove this
   if(serialDebug) {
