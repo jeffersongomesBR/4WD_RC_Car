@@ -60,7 +60,13 @@ void ReadBuffer() {
     buffer[i] = Serial.read();
   }
 
+  if(debug)
+  Serial.println((String)"Received: " + lenght + " Bytes of data");
+
   if(hasKeyPrefix) {
+
+    if(debug)
+    Serial.println((String)"With " + KeyPrefix + " prefix and " + buffer[1] + " key");
 
     ReadKey(buffer[1]);
   }
