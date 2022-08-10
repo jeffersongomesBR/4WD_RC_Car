@@ -48,104 +48,6 @@ u32 preTimeDbg = 0; //usado pelo loop checkpoint
 
 /// ---Codigo--- ///
 
-//Read serial buffer and clear it
-void ReadBuffer() {
-
-  int buffer[64];
-  int lenght = Serial.available();
-  bool hasKeyPrefix = Serial.find(KeyPrefix);
-
-  for(int i = 0; i < lenght; i++) {
-
-    buffer[i] = Serial.read();
-  }
-
-  if(debug)
-  Serial.println((String)"Received: " + lenght + " Bytes of data");
-
-  if(hasKeyPrefix) {
-
-    if(debug)
-    Serial.println((String)"With " + KeyPrefix + " prefix and " + buffer[1] + " key");
-
-    ReadKey(buffer[1]);
-  }
-}
-
-void Activity() {
-
-  if(signal) {
-
-    digitalWrite(LED_BUILTIN, 0);
-    signal = false;
-  }
-  else  {
-
-    digitalWrite(LED_BUILTIN, 1);
-    signal = true;
-  }
-}
-
-//Send vars to serial monitor
-void Dbg() {
-
-  Activity();
-
-  //Debug var
-  Serial.println("/// Debug ///");
-  Serial.println((String)"velocity=" + velocity);
-}
-
-void UpdateSpeed() {
-
-  switch (gear) {
-
-    case 0 :
-      velocity = 0;
-    break;
-
-    case 1 :
-      velocity = firstGear;
-    break;
-
-    case 2 :
-      velocity = secondGear;
-    break;
-
-    case 3 :
-      velocity = thirdGear;
-    break;
-
-    case 4 :
-      velocity = fourthGear;
-    break;
-
-    case 5 :
-      velocity = fivethGear;
-    break;
-
-    case 6 :
-      velocity = sixGear;
-    break;
-    
-    default :
-      if(gear > 6) {
-
-        gear = 6;
-      }
-
-      if(gear == 255) { //gear doesn't go negative
-
-        gear = 0;
-      }
-    break;
-  }
-
-  SetSpeed(velocity);
-}
-
-//TODO: UpdateRotation();
-
 //TODO: Need tests
 void SetDirection(int8_t leftWheel, int8_t rightWheel) {
 
@@ -197,11 +99,55 @@ void SetSpeed(uint8_t speed) {
   SetSpeed(speed, speed);
 }
 
-//TODO: Console commands
-/*void ReadCommand(String command) {
+void UpdateSpeed() {
 
-  //...
-}*/
+  switch (gear) {
+
+    case 0 :
+      velocity = 0;
+    break;
+
+    case 1 :
+      velocity = firstGear;
+    break;
+
+    case 2 :
+      velocity = secondGear;
+    break;
+
+    case 3 :
+      velocity = thirdGear;
+    break;
+
+    case 4 :
+      velocity = fourthGear;
+    break;
+
+    case 5 :
+      velocity = fivethGear;
+    break;
+
+    case 6 :
+      velocity = sixGear;
+    break;
+    
+    default :
+      if(gear > 6) {
+
+        gear = 6;
+      }
+
+      if(gear == 255) { //gear doesn't go negative
+
+        gear = 0;
+      }
+    break;
+  }
+
+  SetSpeed(velocity);
+}
+
+//TODO: UpdateRotation();
 
 void ReadKey(char key) {
 
@@ -273,6 +219,60 @@ void ReadKey(char key) {
     if(debug)
     Serial.println("Light not implemented yet");
   }
+}
+
+//TODO: Console commands
+/*void ReadCommand(String command) {
+
+  //...
+}*/
+
+//Read serial buffer and clear it
+void ReadBuffer() {
+
+  int buffer[64];
+  int lenght = Serial.available();
+  bool hasKeyPrefix = Serial.find(KeyPrefix);
+
+  for(int i = 0; i < lenght; i++) {
+
+    buffer[i] = Serial.read();
+  }
+
+  if(debug)
+  Serial.println((String)"Received: " + lenght + " Bytes of data");
+
+  if(hasKeyPrefix) {
+
+    if(debug)
+    Serial.println((String)"With " + KeyPrefix + " prefix and " + buffer[1] + " key");
+
+    ReadKey(buffer[1]);
+  }
+}
+
+void Activity() {
+
+  if(signal) {
+
+    digitalWrite(LED_BUILTIN, 0);
+    signal = false;
+  }
+  else  {
+
+    digitalWrite(LED_BUILTIN, 1);
+    signal = true;
+  }
+}
+
+//Send vars to serial monitor
+void Dbg() {
+
+  Activity();
+
+  //Debug var
+  Serial.println("/// Debug ///");
+  Serial.println((String)"velocity=" + velocity);
 }
 
 //WARN: INPUT DOESN'T WORK AT STARTUP!
