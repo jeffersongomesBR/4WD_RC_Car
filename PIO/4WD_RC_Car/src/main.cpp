@@ -244,10 +244,12 @@ void ReadBuffer() {
 
   if(hasKeyPrefix) {
 
-    if(debug)
-    Serial.println((String)"With " + KeyPrefix + " prefix and " + buffer[1] + " key");
+    char key = (char)buffer[1];
 
-    ReadKey(buffer[1]);
+    if(debug)
+    Serial.println((String)"With " + KeyPrefix + " prefix and " + key + " key");
+
+    ReadKey(key);
   }
 }
 
