@@ -26,6 +26,7 @@
 /// ---Definições--- ///
 const bool serialDebug = true; //Enviar variaveis ao monitor serial (REMOVER EM RELEASE!)
 const bool debug = true; //Enviar eventos de debug ao monitor serial (REMOVER EM RELEASE!)
+const bool useKeyPrefix = false; //Usar prefixo para teclas
 const uint16_t dbgRate = 1000; //Atraso de envio de informações ao monitor serial (ms)
 
 //Velocidades
@@ -235,12 +236,12 @@ void ReadBuffer() {
   bool hasKeyPrefix = Serial.find(KeyPrefix);
 
   //FIXME: debug
-  for(int i = 0; i < 64; i++) {
+  /*for(int i = 0; i < 64; i++) {
     
     Serial.println((String)Serial.read());
-  }
+  }*/
 
-  /*for(int i = 0; i < lenght; i++) {
+  for(int i = 0; i < lenght; i++) {
 
     buffer[i] = Serial.read();
   }
@@ -248,15 +249,15 @@ void ReadBuffer() {
   if(debug)
   Serial.println((String)"Received: " + lenght + " Bytes of data");
 
-  if(hasKeyPrefix) {
+  if(hasKeyPrefix || useKeyPrefix == false) {
 
-    char key = (char)buffer[1];
+    char key = (char)buffer[0];
 
     if(debug)
     Serial.println((String)"With " + KeyPrefix + " prefix and " + key + " key");
 
     ReadKey(key);
-  }*/
+  }
 }
 
 void Activity() {
