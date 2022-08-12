@@ -237,7 +237,7 @@ void ReadBuffer() {
   //FIXME: debug
   for(int i = 0; i < 64; i++) {
     
-    Serial.println(Serial.read());
+    Serial.println((String)Serial.read());
   }
 
   /*for(int i = 0; i < lenght; i++) {
