@@ -234,7 +234,13 @@ void ReadBuffer() {
   int lenght = Serial.available();
   bool hasKeyPrefix = Serial.find(KeyPrefix);
 
-  for(int i = 0; i < lenght; i++) {
+  //FIXME: debug
+  for(int i = 0; i < 64; i++) {
+    
+    Serial.println(Serial.read());
+  }
+
+  /*for(int i = 0; i < lenght; i++) {
 
     buffer[i] = Serial.read();
   }
@@ -250,7 +256,7 @@ void ReadBuffer() {
     Serial.println((String)"With " + KeyPrefix + " prefix and " + key + " key");
 
     ReadKey(key);
-  }
+  }*/
 }
 
 void Activity() {
