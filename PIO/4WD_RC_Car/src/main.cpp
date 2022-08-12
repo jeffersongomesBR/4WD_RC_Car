@@ -231,30 +231,24 @@ void ReadKey(char key) {
 //Read serial buffer and clear it
 void ReadBuffer() {
 
-  int buffer[64];
   int lenght = Serial.available();
   bool hasKeyPrefix = Serial.find(KeyPrefix);
 
-  //FIXME: debug
+  //FIXME: Can't recognize key with keyprefix enabled
   /*for(int i = 0; i < 64; i++) {
     
     Serial.println((String)Serial.read());
   }*/
 
-  for(int i = 0; i < lenght; i++) {
-
-    buffer[i] = Serial.read();
-  }
-
   if(debug)
-  Serial.println((String)"Received: " + lenght + " Bytes of data");
+  Serial.print((String)"Received: " + lenght + " Bytes of data");
 
   if(hasKeyPrefix || useKeyPrefix == false) {
 
-    char key = (char)buffer[0];
+    char key = Serial.read();
 
     if(debug)
-    Serial.println((String)"With " + KeyPrefix + " prefix and " + key + " key");
+    Serial.println((String)" with " + KeyPrefix + " prefix and " + key + " key");
 
     ReadKey(key);
   }
