@@ -11,7 +11,7 @@
 #define ENB 11 //PWM~
 
 /// ---Comandos--- ///
-#define KeyPrefix '/'
+#define KeyPrefix '/' //Unused
 
 //Keys
 #define Foward 'w'
@@ -26,7 +26,6 @@
 /// ---Definições--- ///
 const bool serialDebug = true; //Enviar variaveis ao monitor serial (REMOVER EM RELEASE!)
 const bool debug = true; //Enviar eventos de debug ao monitor serial (REMOVER EM RELEASE!)
-const bool useKeyPrefix = false; //Usar prefixo para teclas
 const uint16_t dbgRate = 1000; //Atraso de envio de informações ao monitor serial (ms)
 
 //Velocidades
@@ -228,31 +227,7 @@ void ReadKey(char key) {
   //...
 }*/
 
-//Read serial buffer and clear it
-void ReadBuffer() {
-
-  int lenght = Serial.available();
-  bool hasKeyPrefix = Serial.find(KeyPrefix);
-
-  //FIXME: Can't recognize key with keyprefix enabled
-  /*for(int i = 0; i < 64; i++) {
-    
-    Serial.println((String)Serial.read());
-  }*/
-
-  if(debug)
-  Serial.print((String)"Received: " + lenght + " Bytes of data");
-
-  if(hasKeyPrefix || useKeyPrefix == false) {
-
-    char key = Serial.read();
-
-    if(debug)
-    Serial.println((String)" with " + KeyPrefix + " prefix and " + key + " key");
-
-    ReadKey(key);
-  }
-}
+//TODO: Read serial buffer and clear it
 
 void Activity() {
 
@@ -301,7 +276,7 @@ void setup() {
 void loop() {
 
   if(Serial.available() > 0)
-  ReadBuffer();
+  ReadKey(Serial.read());
 
   //Chronometer
   u32 currentTime = millis();
