@@ -149,13 +149,18 @@ void UpdateSpeed() {
 
 //TODO: UpdateRotation();
 
+void SwitchGear(int8_t to) {
+
+  gear += to;
+  UpdateSpeed();
+}
+
 void ReadKey(char key) {
 
   if(key == GearUp) {
     //TODO: speed variations
 
-    gear++;
-    UpdateSpeed();
+    SwitchGear(1);
 
     if(debug)
     Serial.println("GearUp to: " + gear);
@@ -163,8 +168,7 @@ void ReadKey(char key) {
 
   if(key == GearDown) {
 
-    gear--;
-    UpdateSpeed();
+    SwitchGear(-1);
 
     if(debug)
     Serial.println("GearDown to: " + gear);
