@@ -24,8 +24,8 @@
 #define Left 'a'
 #define Right 'd'
 #define Stop 'x'
-#define GearUp '+'
-#define GearDown '-'
+#define GearUpKey '+'
+#define GearDownKey '-'
 #define Light 'l' //Unused
 
 /// ---Definições--- ///
@@ -34,19 +34,14 @@ const bool debug = true; //Enviar eventos de debug ao monitor serial (REMOVER EM
 const uint16_t dbgRate = 1000; //Atraso de envio de informações ao monitor serial (ms)
 
 //Velocidades
-const uint8_t firstGear = 43; //Minimo 0
-const uint8_t secondGear = 86;
-const uint8_t thirdGear = 129;
-const uint8_t fourthGear = 172;
-const uint8_t fivethGear = 215;
-const uint8_t sixGear = 255; //Maximo 255
+const uint8_t gear[7] = {0, 43, 86, 129, 172, 215, 255}; //Minimo 0, Maximo 255
 
 /// ---Variaveis--- ///
 bool lightON = false; //Unused
 bool stopped = false; //Unused
 bool signal = false; //blink led
 uint8_t hBridge[6] = {IN1, IN2, IN3, IN4, ENA, ENB};
-uint8_t gear = 0; //0-6
+uint8_t selectedGear = 0; //0-6
 uint8_t turnDirection = 0; //-1 = Left, 1 = Right //Unused
 int16_t velocity = 0; //-255/255
 u32 preTimeDbg = 0; //usado pelo loop checkpoint
@@ -125,77 +120,63 @@ void SetSpeed(uint8_t speed) {
 
 void UpdateSpeed() {
 
-  switch (gear) {
+  if(selectedGear > 6) {
 
-    case 0 :
-      velocity = 0;
-    break;
+    if(selectedGear >= 250) { //selectedGear doesn't go negative
 
-    case 1 :
-      velocity = firstGear;
-    break;
+      selectedGear = 0;
+    }
+    else {
 
-    case 2 :
-      velocity = secondGear;
-    break;
-
-    case 3 :
-      velocity = thirdGear;
-    break;
-
-    case 4 :
-      velocity = fourthGear;
-    break;
-
-    case 5 :
-      velocity = fivethGear;
-    break;
-
-    case 6 :
-      velocity = sixGear;
-    break;
-    
-    default :
-      if(gear > 6) {
-
-        gear = 6;
-      }
-
-      if(gear == 255) { //gear doesn't go negative
-
-        gear = 0;
-      }
-    break;
+      selectedGear = 6;
+    }
   }
+
+  velocity = (selectedGear <= 6) ? gear[selectedGear] : gear[6];
 
   SetSpeed(velocity);
 }
 
 //TODO: UpdateRotation();
 
+//Switch gear to a selected gear
 void SwitchGear(int8_t to) {
 
-  gear += to;
+  selectedGear = to;
+  UpdateSpeed();
+}
+
+//Switch gear up
+void GearUp() {
+
+  selectedGear++;
+  UpdateSpeed();
+}
+
+//Switch gear down
+void GearDown() {
+
+  selectedGear--;
   UpdateSpeed();
 }
 
 void ReadKey(char key) {
 
-  if(key == GearUp) {
+  if(key == GearUpKey) {
     //TODO: speed variations
 
-    SwitchGear(1);
+    GearUp();
 
     if(debug)
-    Serial.println("GearUp to: " + gear);
+    Serial.println("GearUp to: " + selectedGear);
   }
 
-  if(key == GearDown) {
+  if(key == GearDownKey) {
 
-    SwitchGear(-1);
+    GearDown();
 
     if(debug)
-    Serial.println("GearDown to: " + gear);
+    Serial.println("GearDown to: " + selectedGear);
   }
 
   if(key == Foward) {
