@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <NewPing.h>
 
 /// ---Pinos--- ///
 
@@ -9,6 +10,10 @@
 #define IN4 5
 #define ENA 10 //PWM~
 #define ENB 11 //PWM~
+
+//Sensor de proximidade
+#define TRIG 6 //Unused
+#define ECHO 7 //Unused
 
 /// ---Comandos--- ///
 #define KeyPrefix '/' //Unused
@@ -45,10 +50,29 @@ uint8_t gear = 0; //0-6
 uint8_t turnDirection = 0; //-1 = Left, 1 = Right //Unused
 int16_t velocity = 0; //-255/255
 u32 preTimeDbg = 0; //usado pelo loop checkpoint
+u32 distance = 0; //1 = 1 cm
+
+/// ---Objects--- ///
+NewPing sonar(TRIG, ECHO, 400); //4 meters max
+
+/// ---Properties--- ///
+//TODO: Use distance to avoid colisions
+u32 Distance() {
+
+  if(!sonar) {
+
+    return sonar.ping_cm();
+  }
+  else {
+
+    Serial.println("Error reading distance!")
+  }
+
+  return 0;
+}
 
 /// ---Codigo--- ///
 
-//TODO: Need tests
 void SetDirection(int8_t leftWheel, int8_t rightWheel) {
 
   //Left-------------------------------
